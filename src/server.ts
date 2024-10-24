@@ -300,7 +300,7 @@ app.post(
   validate(
     'json',
     z
-      .object({ data: DataURISchema, checkExists: z.boolean().or(z.literal(1)).optional() })
+      .object({ data: DataURISchema, checkExists: z.coerce.boolean().or(z.literal(1)).optional() })
       .strict(),
   ),
   toHonoHandler(async (ctx: Context) => {
@@ -328,8 +328,8 @@ app.get(
     'query',
     z
       .object({
-        checkCreator: z.boolean().or(z.literal(1)).optional(),
-        creator: z.boolean().or(z.literal(1)).optional(),
+        checkCreator: z.coerce.boolean().or(z.literal('1')).optional(),
+        creator: z.coerce.boolean().or(z.literal('1')).optional(),
       })
       .strict(),
   ),
