@@ -59,7 +59,13 @@ const FilterSchema = z.object({
   per_page: z.coerce.number().optional(),
   resolve: z.coerce.boolean().or(z.literal(1)).optional(),
   media_type: z
-    .union([z.literal('image'), z.literal('text'), z.literal('video'), z.literal('application')])
+    .union([
+      z.literal('image'),
+      z.literal('text'),
+      z.literal('video'),
+      z.literal('audio'),
+      z.literal('application'),
+    ])
     .optional(),
   media_subtype: z.coerce.string().optional(),
   content_type: z.coerce.string().optional(),
