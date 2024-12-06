@@ -1,5 +1,6 @@
 // ?NOTE: maybe switch to @hono/zod-openapi on next iteration
 import { zValidator } from '@hono/zod-validator';
+
 import {
   checkExists,
   estimateDataCost,
@@ -13,7 +14,6 @@ import {
   resolveUser,
 } from 'ethscriptions';
 import type { EnumAllDetailed } from 'ethscriptions/types.ts';
-
 import { getHeaders, getPrices } from 'ethscriptions/utils';
 import { Hono, type Context, type ValidationTargets } from 'hono';
 import { cors as corsMiddleware } from 'hono/cors';
@@ -464,7 +464,9 @@ app.get(
     const id = ctx.req.param('id');
     const mode = ctx.req.param('mode');
 
+    console.log('server handler:', { settings });
     if (!id) {
+      console.log('no id, all eths');
       return getAllEthscriptions(
         type.includes('blob') ? { ...settings, attachment_present: true } : settings,
       );
