@@ -12,7 +12,6 @@ import {
   getUserProfile,
   resolveUser,
 } from 'ethscriptions';
-
 import type { EnumAllDetailed } from 'ethscriptions/types.ts';
 
 import { getHeaders, getPrices } from 'ethscriptions/utils';
@@ -22,7 +21,6 @@ import { etag as etagMiddleware } from 'hono/etag';
 import { secureHeaders } from 'hono/secure-headers';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { z } from 'zod';
-
 import { ENDPOINTS } from './endpoints-docs.ts';
 
 const HexSchema = z.custom(
@@ -450,7 +448,18 @@ app.get(
   ),
   toHonoHandler(async (ctx: Context) => {
     const { searchParams } = new URL(ctx.req.url);
-    const settings = Object.fromEntries([...searchParams.entries()]);
+    const params = Array.from(searchParams.entries());
+    const settings = {};
+    for (const entry of params) {
+      const [key, value] = entry;
+
+      settings[key] = settings[key]
+        ? Array.isArray(settings[key])
+          ? [...settings[key], value]
+          : [settings[key], value]
+        : value;
+    }
+
     const type = ctx.req.param('type');
     const id = ctx.req.param('id');
     const mode = ctx.req.param('mode');
